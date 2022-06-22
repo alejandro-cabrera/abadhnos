@@ -79,6 +79,7 @@ class clase_mysqli{
 		}
 		echo "</table>";
 	}
+	
 	/*funcion para mostrar la consulta en forma de tabla*/
 	function verconsultacrud(){
 		echo "<table border=1>";
