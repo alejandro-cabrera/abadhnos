@@ -70,26 +70,28 @@
           <table border=1 class='tablas' rows-container>
             <tr>
               <td></td>
+              <td hidden></td>
               <td>Nombre Comercial</td>
               <td>Precio Unitario</td>
               <td>Ingrese Cantidad</td>
               <td>Descuento</td>
               <td>Precio Final</td>
             </tr>
-            <template row-template>
+          </table>
+          <template row-template>
               <tr>
-                <td><button id="btn-eliminar" onclick="agregarEliminarProducto(this)" pos="" accion="eliminar"></button></td>
+                <td><button id="btn-eliminar" onclick="quitarProducto(this)" accion="eliminar"></button></td>
+                <td id="posicion" hidden></td>
                 <td id="nombre-com"></td>
                 <td id="precio-uni"></td>
                 <td></td>
                 <td></td>
                 <td></td>
               </tr>
-            </template>
-          </table>
+          </template>
         </section>
         <section id="pedidos-activos">
-          
+          <button onclick="borrarPedido()"></button>
         </section>
       </div>
     </section>

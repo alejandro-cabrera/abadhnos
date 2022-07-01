@@ -7,8 +7,15 @@
 	$filtro=$_POST["filtro"];
 	$keywords=$_POST['keywords'];
 
+	if($keywords === ""){
+		$conexion->consulta("SELECT * FROM productos");
+	    $conexion->verconsultacompra();
+	} else {
+
     $conexion->consulta("SELECT * FROM productos WHERE $filtro='$keywords'");
     $conexion->verconsultacompra();
+
+	}
 
     echo("<span>Resultados: </span>".$conexion->numregistros());
 ?>

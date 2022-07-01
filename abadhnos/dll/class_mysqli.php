@@ -88,12 +88,6 @@ class clase_mysqli{
 		for ($i=0; $i < $this->numcampos() ; $i++) { 
 			//echo "<td>".$this->nombrecampo($i)."</td>";
 			echo  "<td>".mysqli_fetch_field_direct($this->Consulta_ID, $i)->name."</td>";
-
-			/* if ($i=0){
-				echo  "<td hidden>".mysqli_fetch_field_direct($this->Consulta_ID, $i)->name."</td>";
-			} else {
-				echo  "<td>".mysqli_fetch_field_direct($this->Consulta_ID, $i)->name."</td>";
-			} */
 		}
 		echo "</tr>";
 		$numRegistro = 1;
@@ -102,12 +96,6 @@ class clase_mysqli{
 			echo "<td><button onclick='agregarProducto(this)' class='btn-agregar-eliminar' value='agregar' pos=''></td>";
 			for ($i=0; $i < $this->numcampos(); $i++) {
 				echo "<td>".utf8_encode($row[$i])."</td>";
-
-				/* if ($i=0){
-					echo "<td hidden>".utf8_encode($row[$i])."</td>";
-				} else {
-					echo "<td>".utf8_encode($row[$i])."</td>";
-				} */
 			}
 			echo "</tr>";
 		}

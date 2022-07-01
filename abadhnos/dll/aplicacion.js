@@ -16,7 +16,6 @@ function fetchgo() {
         return response.text();
     })
     .then(function(text){
-        console.log(text);
         resultado.innerHTML = text;
     })
     return false;
@@ -27,44 +26,101 @@ formulario.addEventListener("submit", () => {
     const visibilidadMensaje = mensajeBusqueda.getAttribute("visible");
     const visibilidadResultado = resultado.getAttribute("visible");
 
-    console.log(visibilidadMensaje);
-    console.log(visibilidadResultado);
-
     if (visibilidadMensaje === "true"){
         mensajeBusqueda.setAttribute("visible", false);
         resultado.setAttribute("visible", true);
-    
-        console.log(visibilidadMensaje);
-        console.log(visibilidadResultado);
     }
 });
 
-const rowTemplate = document.querySelector("[row-template]")
+const rowTemplate = document.querySelector("[row-template]");
+//const rowAgregar = rowTemplate.content.cloneNode(true).children[0];
 const rowsContainer = document.querySelector("[rows-container]")
 
 function agregarProducto(boton){
     const rowBoton = boton.parentElement.parentElement
-    const id = rowBoton.children[1];
-    const nombreCom = rowBoton.children[2];
-    const precio = rowBoton.children[6];
+    const id = rowBoton.children[1].textContent;
+    const nombreCom = rowBoton.children[2].textContent;
+    const precio = rowBoton.children[6].textContent;
     const agregar = boton.value;
-    let data = new URLSearchParams();
+    let data = new FormData();
 
     data.append("id", id);
     data.append("nombre", nombreCom);
     data.append("precio", precio);
-    data.append("agregar", agregar);
+    data.append("añadir", agregar);
 
-    fetch("http://localhost/abadhnos/dll/agregarAPedido.php", {
-        method: "post",
-        body: data
-    })
-    .then(function(response){
-        return response.text();
-    })
-    .then(function(text){
-        console.log(text);
-        resultado.innerHTML = text;
-    })
-    return false;
+    const XHR = new XMLHttpRequest();
+    
+    XHR.addEventListener( 'load', function( event ) {
+        console.log("hola");
+        console.log(XHR.responseText);
+        if(XHR.responseText){
+            verPedido(XHR.responseText, true);
+        }
+    });
+    
+    XHR.open('POST', "http://localhost/abadhnos/dll/agregarAPedido.php");
+    XHR.send(data);
+}
+
+
+function comprobarPedidos() {
+    let data = new FormData;
+    const comprobar = true;
+    data.append("comprobar", comprobar);
+    const XHR = new XMLHttpRequest();
+    XHR.open('POST', "http://localhost/abadhnos/dll/agregarAPedido.php");
+    XHR.send(data);
+
+    XHR.addEventListener( 'load', function( event ) {
+        console.log(XHR.responseText);
+        if(XHR.responseText){
+            verPedido(XHR.responseText, false);
+        }
+    });
+
+}
+
+window.onload = comprobarPedidos();
+
+
+function verPedido(pedido, i) {
+    pedido = JSON.parse(pedido);
+//    if (i===true) pedido = {0: pedido};
+    console.log(pedido);
+    
+    for(var key in pedido) {
+        const rowAgregar = rowTemplate.content.cloneNode(true).children[0];
+        for(var key1 in pedido[key]["item"]){
+            if(key1 === "item_posicion") rowAgregar.querySelector("#posicion").textContent = pedido[key]["item"][key1];
+            if(key1 === "item_nombre") rowAgregar.querySelector("#nombre-com").textContent = pedido[key]["item"][key1];
+            if(key1 === "item_precio") rowAgregar.querySelector("#precio-uni").textContent = pedido[key]["item"][key1];
+            rowsContainer.append(rowAgregar);
+        }
+    }
+}
+
+
+function borrarPedido(){
+    let data = new FormData;
+    const borrar = true;
+    data.append("borrar", borrar);
+    const XHR = new XMLHttpRequest();
+    XHR.open('POST', "http://localhost/abadhnos/dll/agregarAPedido.php");
+    XHR.send(data);
+
+}
+
+function quitarProducto(boton){
+    let data = new FormData;
+    const posicionItem = boton.parentElement.nextElementSibling.textContent;
+    const quitar = true;
+
+    console.log(posicionItem); 
+    
+    data.append("item-id", posicionItem);
+    data.append("quitar", quitar);
+    const XHR = new XMLHttpRequest();
+    XHR.open('POST', "http://localhost/abadhnos/dll/agregarAPedido.php");
+    XHR.send(data); 
 }
